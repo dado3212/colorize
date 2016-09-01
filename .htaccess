@@ -1,0 +1,9 @@
+# One year for images
+<filesMatch ".(jpg|jpeg|png|gif|ico)$">
+	Header set Cache-Control "max-age=31536000, public"
+</filesMatch>
+
+# One week for css and js (month = 2628000)
+<filesMatch ".(css|js)$">
+	Header set Cache-Control "max-age=604800, public"
+</filesMatch>

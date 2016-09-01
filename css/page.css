@@ -1,0 +1,48 @@
+html, body {
+	height: 100%;
+	min-height: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+.display {
+	position: relative;
+	min-height: 100%;
+
+	font-family: 'Oswald', sans-serif;
+}
+
+.center {
+	position: absolute;
+	margin-top: 23px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	text-align: center;
+
+	font-size: 80px;
+	font-size: 20vw;
+}
+
+.display span {
+	display: block;
+}
+
+.hex {
+	font-size: 1em;
+	font-weight: 400;
+}
+
+.query {
+	margin-top: -0.5em;
+
+	font-size: 0.4em;
+	font-weight: 300;
+}
+
+@media all and (min-width: 700px) {
+	.center {
+		font-size: 140px;
+	}
+}

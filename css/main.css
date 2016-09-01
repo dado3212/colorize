@@ -1,0 +1,104 @@
+html, body {
+	min-height: 100%;
+	background-color: #5A5F6C;
+
+	margin: 0;
+	padding: 0;
+
+	font-family: sans-serif;
+}
+
+.top {
+	color: white;
+	margin-top: 60px;
+	text-align: center;
+
+	font-family: 'Oswald', sans-serif;
+	font-size: 40px;
+	font-weight: 700;
+}
+
+.top * {
+	vertical-align: middle;
+	font-size: 1em;
+	margin: 0px;
+	display: inline-block;
+}
+
+.top img {
+	max-height: 1em;
+}
+
+.well {
+	background-color: #717788;
+
+	border-radius: 10px;
+	margin: 15px 20px;
+	padding: 15px;
+
+	font-family: 'Open Sans', sans-serif;
+	color: white;
+}
+
+.well h2 {
+	margin: 0px;
+
+	font-weight: 400;
+	font-family: 'Oswald', sans-serif;
+}
+
+.well p {
+	margin-top: 0px;
+}
+
+.cards {
+	text-align: center;
+}
+
+.card {
+	width: 150px;
+	height: 150px;
+	margin: 5px;
+	border-radius: 5px;
+
+	display: inline-block;
+	position: relative;
+
+	overflow: hidden;
+
+	color: white;
+	text-decoration: none;
+
+	font-family: 'Oswald', sans-serif;
+
+	transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+
+.center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	text-align: center;
+
+	font-size: 30px;
+}
+
+.hex {
+	font-size: 1em;
+	font-weight: 400;
+	display: block;
+}
+
+.query {
+	margin-top: -0.5em;
+	display: block;
+
+	font-size: 0.6em;
+	font-weight: 300;
+}
