@@ -3,7 +3,7 @@
 	Header set Cache-Control "max-age=31536000, public"
 </filesMatch>
 
-# One week for css and js (month = 2628000)
+# One week for css and js
 <filesMatch ".(css|js)$">
 	Header set Cache-Control "max-age=604800, public"
 </filesMatch>
