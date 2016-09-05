@@ -102,3 +102,10 @@ html, body {
 	font-size: 0.6em;
 	font-weight: 300;
 }
+
+@media (min-width: 960px) {
+	.well  {
+    max-width: 960px;
+		margin: 15px auto;
+	}
+}
