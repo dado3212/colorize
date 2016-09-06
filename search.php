@@ -154,7 +154,7 @@
 		<div class="display" style="color: <?php echo getTextColor($color); ?>;">
 			<div class="center">
 				<span class="hex"><?php echo $color; ?></span>
-				<span class="query"><?php echo strtolower($query); ?></span>
+				<span class="query"><?php echo htmlspecialchars(strtolower($query)); ?></span>
 			</div>
 		</div>
 	</body>
