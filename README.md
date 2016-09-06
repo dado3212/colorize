@@ -1,5 +1,4 @@
-# Colorize
-
+# ![Logo](https://github.com/dado3212/colorize/raw/master/images/favicons/favicon-32x32.png) Colorize
 
 This was a project that I created a while ago in order to turn a word/phrase into a hex color.  It works by scraping the first page of Google Image results for the word/phrase, and finding the average color for the returned images.
 
