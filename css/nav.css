@@ -46,6 +46,8 @@
 #search {
 	margin-bottom: 0px;
 	display: inline-block;
+	min-width: 35%;
+	margin-right: 5px;
 
 	float: right;
 }
@@ -56,7 +58,7 @@
 	height: 35px;
 
 	margin-top: 5px;
-	margin-right: 5px;
+	width: 100%;
 
 	border: none;
 	color: white;
