@@ -76,3 +76,10 @@
 
     outline: none;
 }
+
+@media (min-width: 1300px) {
+	#search {
+		width: 455px;
+		min-width: 0px;
+	}
+}
