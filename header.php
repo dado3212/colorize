@@ -59,8 +59,8 @@
 			// Handle home page stylesheet/title
 			if ($page == "home") { ?>
 				<meta property="og:title" content="Colorize">
-				<meta property="og:image" content="http://alexbeals.com/projects/colorize/images/cover.jpg">
-				<meta property="og:url" content="http://alexbeals.com/projects/colorize/">
+				<meta property="og:image" content="https://alexbeals.com/projects/colorize/images/cover.jpg">
+				<meta property="og:url" content="https://alexbeals.com/projects/colorize/">
 				<meta property="og:description" content="Turn any word into a hex color.  This site uses Google Images to get the average color from the first page of image results, and converts it into hex.">
 
 				<meta name="description" content="Turn any word into a hex color.  This site uses Google Images to get the average color from the first page of image results, and converts it into hex.">
@@ -71,10 +71,11 @@
 				
 			<?php
 			// Handle search page stylesheet/title/background-color
+			// https://alexbeals.com/projects/colorize/preview.php?query=GOOD%20TIME&color=%23AAAAAA
 			} else if ($page == "search") { ?>
 				<meta property="og:title" content="Colorize | <?php echo $query; ?>">
-				<meta property="og:image" content="http://alexbeals.com/projects/colorize/images/cover.jpg">
-				<meta property="og:url" content="http://alexbeals.com<?php echo $_SERVER['REQUEST_URI']; ?>">
+				<meta property="og:image" content="<?php echo "https://alexbeals.com/projects/colorize/preview.php?query=" . urlencode($query) . "&color=" . urlencode($color); ?>">
+				<meta property="og:url" content="https://alexbeals.com<?php echo $_SERVER['REQUEST_URI']; ?>">
 				<meta property="og:description" content="Turn any word into a hex color.  In this case, '<?php echo $query; ?>' becomes <?php echo $color; ?>.">
 
 				<meta name="description" content="Turn any word into a hex color.  In this case, '<?php echo $query; ?>' becomes <?php echo $color; ?>.">
