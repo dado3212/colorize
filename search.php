@@ -166,8 +166,8 @@
 ?>
 		<div class="display" style="color: <?php echo getTextColor($color); ?>;">
 			<div class="center">
-				<span class="rgb" style="display: none;"><?php echo $rgb; ?></span>
-				<span class="hex"><?php echo $color; ?></span>
+				<span class="hex" onclick="selectText('.hex');"><?php echo $color; ?></span>
+				<span class="rgb" style="display: none;" onclick="selectText('.rgb');"><?php echo $rgb; ?></span>
 				<div class="change <?php echo isColorBright($color) ? 'dark' : ''; ?>" onclick="switchDisplay()">
 					<img src="images/flip.png">
 					<span>rgb</span>
@@ -190,6 +190,20 @@
 				}
 
 				isHex = !isHex;
+			}
+
+			// Adapted from https://stackoverflow.com/a/1173319/3951475
+			function selectText(selector) {
+				if (document.selection) {
+					var range = document.body.createTextRange();
+					range.moveToElementText(document.querySelector(selector).firstChild);
+					range.select();
+				} else if (window.getSelection) {
+					var range = document.createRange();
+					range.selectNode(document.querySelector(selector).firstChild);
+					window.getSelection().removeAllRanges();
+					window.getSelection().addRange(range);
+				}
 			}
 		</script>
 	</body>
