@@ -29,9 +29,39 @@ html, body {
 	display: block;
 }
 
+.hex, .rgb {
+	font-weight: 400;
+}
+
+.rgb {
+	font-size: 0.5em;
+	height: 2.96em;
+	width: 8em;
+	line-height: 2.96em;
+}
+
 .hex {
 	font-size: 1em;
-	font-weight: 400;
+	width: 4em;
+}
+
+.change {
+  font-size: 0.2em;
+  position: absolute;
+  right: -1em;
+   top: -0.5em;
+
+  width: 2em;
+}
+
+.change img {
+  width: 1.2em;
+  margin-bottom: -0.5em;
+}
+
+.change.dark img {
+	filter: brightness(18.75%);
+	-webkit-filter: brightness(18.75%);
 }
 
 .query {

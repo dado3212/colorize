@@ -55,6 +55,11 @@
 		return strtoupper("#" . substr("00" . dechex($color["red"]), -2) . substr("00" . dechex($color["green"]), -2) . substr("00" . dechex($color["blue"]), -2));
 	}
 
+	// Takes in a hex color and converts it to rgb
+	function hexToRGB($hex) {
+		return "rgb(" . hexdec(substr($hex, 1, 2)) . "," . hexdec(substr($hex, 3, 2)) . "," . hexdec(substr($hex, 5, 2)) . ")";
+	}
+
 	// Takes in a single image url, scales it to one pixel, and returns that color (the average)
 	function getColorFromImage($image_url) {
 		$image_data = getimagesize($image_url);
@@ -81,8 +86,8 @@
 		return $color;
 	}
 
-	// Uses relative luminance to determine font color
-	function getTextColor($hex) {
+	// Determines if the display should be light or dark
+	function isColorBright($hex) {
 		$color = substr($hex, 1); // strip #
 		$rgb = intval($color, 16);
 		$r = ($rgb >> 16) & 0xff;
@@ -91,7 +96,12 @@
 
 		$luma = 0.2126 * $r + 0.7152 * $g + 0.0722 * $b;
 
-		if ($luma > 215) { // too bright for white text
+		return $luma > 215;
+	}
+
+	// Uses relative luminance to determine font color
+	function getTextColor($hex) {
+		if (isColorBright($hex)) {  // too bright for white text
 			return "#333";
 		} else {
 			return "white";
@@ -146,6 +156,9 @@
 		}
 	}
 
+	// Convert the hex into rgb
+	$rgb = hexToRGB($color);
+
 	// Ouput the page with the color
 	$page = "search";
 
@@ -153,9 +166,31 @@
 ?>
 		<div class="display" style="color: <?php echo getTextColor($color); ?>;">
 			<div class="center">
+				<span class="rgb" style="display: none;"><?php echo $rgb; ?></span>
 				<span class="hex"><?php echo $color; ?></span>
+				<div class="change <?php echo isColorBright($color) ? 'dark' : ''; ?>" onclick="switchDisplay()">
+					<img src="images/flip.png">
+					<span>rgb</span>
+				</div>
 				<span class="query"><?php echo htmlspecialchars(strtolower($query)); ?></span>
 			</div>
 		</div>
+		<script>
+			var isHex = true;
+
+			function switchDisplay() {
+				if (isHex) {
+					document.querySelector('.change span').innerHTML = 'hex';
+					document.querySelector('.hex').style.display = 'none';
+					document.querySelector('.rgb').style.display = 'block';
+				} else {
+					document.querySelector('.change span').innerHTML = 'rgb';
+					document.querySelector('.hex').style.display = 'block';
+					document.querySelector('.rgb').style.display = 'none';
+				}
+
+				isHex = !isHex;
+			}
+		</script>
 	</body>
 </html>

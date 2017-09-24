@@ -73,13 +73,15 @@
 			// Handle search page stylesheet/title/background-color
 			// https://alexbeals.com/projects/colorize/preview.php?query=GOOD%20TIME&color=%23AAAAAA
 			} else if ($page == "search") { ?>
-				<meta property="og:title" content="Colorize | <?php echo $query; ?>">
+				<meta property="og:title" content="Colorize | <?php echo htmlspecialchars($query); ?>">
 				<meta property="og:image" content="<?php echo "https://alexbeals.com/projects/colorize/preview.php?query=" . urlencode($query) . "&color=" . urlencode($color); ?>">
 				<meta property="og:url" content="https://alexbeals.com<?php echo $_SERVER['REQUEST_URI']; ?>">
-				<meta property="og:description" content="Turn any word into a hex color.  In this case, '<?php echo $query; ?>' becomes <?php echo $color; ?>.">
+				<meta property="og:description" content="Turn any word into a hex color.  In this case, '<?php echo htmlspecialchars($query); ?>' becomes <?php echo $color; ?>.">
 
-				<meta name="description" content="Turn any word into a hex color.  In this case, '<?php echo $query; ?>' becomes <?php echo $color; ?>.">
-				<title>Colorize | <?php echo $query; ?></title>
+				<meta name="robots" content="noindex" />
+
+				<meta name="description" content="Turn any word into a hex color.  In this case, '<?php echo htmlspecialchars($query); ?>' becomes <?php echo $color; ?>.">
+				<title>Colorize | <?php echo htmlspecialchars($query); ?></title>
 				<link rel="stylesheet" type="text/css" href="css/page.css">
 
 			</head>
