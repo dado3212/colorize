@@ -1,23 +1,26 @@
 <?php
 	include("secret.php");
 
-	// Scrapes request from Google Images for the first supply of images
+	// Scrapes request from SerpAPI because Google is throttling now.
+	// I have a free tier, of 250 requests/month. Good luck!
 	function getImagesFromWord($string) {
-		// Google Images base url
-		$base_url = "https://www.google.com/search?as_st=y&tbm=isch&as_q=";
+    global $SERP_API_KEY;
 
-		$raw_search = file_get_contents($base_url . urlencode($string));
+    $url = "https://serpapi.com/search.json?engine=google_images"
+         . "&q=" . urlencode($string)
+         . "&api_key=" . $SERP_API_KEY;
 
-		/* Process to extract images
-		   Sample chunk:
-		 
-			<a href="/url?q=http://www.phillymag.com/foobooz/2015/12/30/what-mattered-to-you-in-2015-cheese-idiots-beer-and-tacos/&amp;sa=U&amp;ved=0ahUKEwj7x4ruptfKAhVMPhQKHRcNB_8QwW4IFjAA&amp;usg=AFQjCNGtvTvPed49pKooC9SJHUhQJMrQXw">
-				<img height="104" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkiWGXvE-52FlEELbxQ1guyFbkDcB2LS234i0JClQzFk5-BMX_WVJHWvI" width="150" alt="Image result for cheese">
-			</a>
-		*/
-		preg_match_all("/<a href=\"\/url\?q=.*?\"><img.*?src=\"(.*?)\".*?><\/a>/s", $raw_search, $images);
+    $json = json_decode(file_get_contents($url), true);
 
-		return $images[1];
+    if (empty($json['images_results'])) {
+      return [];
+    }
+
+    // Averaging from thumbnails is fine
+    return array_map(
+			fn($r) => $r['thumbnail'],
+			array_slice($json['images_results'], 0, 20)
+    );
 	}
 
 	// Takes in an array of image URLs, and returns a single color
@@ -123,6 +126,7 @@
 	$stmt->execute();
 
 	$color = "";
+	$override_name = null;
 
 	if ($stmt->rowCount() == 1) {
 		$color = $stmt->fetch()["color"];
@@ -133,26 +137,33 @@
 		$stmt->execute();
 	} else {
 		// Query is new, generate it
-		$color = getColorFromImages(getImagesFromWord($query));
-
-		// Check to make sure that someone didn't JUST add it
-		$stmt = $PDO->prepare("SELECT * FROM associations WHERE query=:query");
-		$stmt->bindValue(":query", $query, PDO::PARAM_STR);
-		$stmt->execute();
-
-		if ($stmt->rowCount() == 0) {
-			// Add it to the database
-			$add = $PDO->prepare("INSERT INTO associations (query, color) VALUES (:query, :color)");
-			$add->bindValue(":query", $query, PDO::PARAM_STR);
-			$add->bindValue(":color", $color, PDO::PARAM_STR);
-			$add->execute();
+		$images = getImagesFromWord($query);
+		// Don't save if we fail
+		if (empty($images)) {
+			$color = '#000000';
+			$override_name = '#error';
 		} else {
-			$color = $stmt->fetch()["color"];
+			$color = getColorFromImages($images);
 
-			// Increment count of times viewed by one
-			$stmt = $PDO->prepare("UPDATE associations SET count = count + 1 WHERE query=:query");
+			// Check to make sure that someone didn't JUST add it
+			$stmt = $PDO->prepare("SELECT * FROM associations WHERE query=:query");
 			$stmt->bindValue(":query", $query, PDO::PARAM_STR);
 			$stmt->execute();
+
+			if ($stmt->rowCount() == 0) {
+				// Add it to the database
+				$add = $PDO->prepare("INSERT INTO associations (query, color) VALUES (:query, :color)");
+				$add->bindValue(":query", $query, PDO::PARAM_STR);
+				$add->bindValue(":color", $color, PDO::PARAM_STR);
+				$add->execute();
+			} else {
+				$color = $stmt->fetch()["color"];
+
+				// Increment count of times viewed by one
+				$stmt = $PDO->prepare("UPDATE associations SET count = count + 1 WHERE query=:query");
+				$stmt->bindValue(":query", $query, PDO::PARAM_STR);
+				$stmt->execute();
+			}
 		}
 	}
 
@@ -166,7 +177,7 @@
 ?>
 		<div class="display" style="color: <?php echo getTextColor($color); ?>;">
 			<div class="center">
-				<span class="hex" onclick="selectText('.hex');"><?php echo $color; ?></span>
+				<span class="hex" onclick="selectText('.hex');"><?php echo $override_name ?? $color; ?></span>
 				<span class="rgb" style="display: none;" onclick="selectText('.rgb');"><?php echo $rgb; ?></span>
 				<div class="change <?php echo isColorBright($color) ? 'dark' : ''; ?>" onclick="switchDisplay()">
 					<img src="images/flip.png">
